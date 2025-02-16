@@ -5,6 +5,7 @@ playerApi = 'https://partner-api.prizepicks.com/projections?per_page=1000'
 
 stat_kind = {}
 playerData = {}
+finalizedData = {}
 
 
 lines = requests.get(lineApi)
@@ -19,9 +20,17 @@ if lines.status_code and players.status_code== 200:
     #Initialized empty dictionary for stat_kind at the beggining of the file. Now we will loop through line JSON Data where we will be mapping player ID to stat type and line score          
     lineData = lines.json()['data'] #JSON daata for player line and line type
     for object in lineData:
-            stat_kind[object['relationships']['new_player']['data']['id']] = [object['attributes']['stat_type'],object['attributes']['line_score']]
+            if object['relationships']['new_player']['data']['id'] not in stat_kind:
+                stat_kind[object['relationships']['new_player']['data']['id']] = [[object['attributes']['stat_type'],object['attributes']['line_score']]]
+            else:
+                stat_kind[object['relationships']['new_player']['data']['id']].append([object['attributes']['stat_type'],object['attributes']['line_score']])
     
-    for i in range(0,len(stat_kind)):
+    for line in stat_kind:
+         for player in playerData:
+              if player == line:
+                   finalizedData[playerData[player]] = stat_kind[line]
+    print(finalizedData)
+                   
          
 else:
     print(f"Error:{lines.status_code}")
