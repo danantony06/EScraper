@@ -3,6 +3,7 @@ import cloudscraper
 
 matches = {}
 players = {}
+finalDict = {}
 
 scraper = cloudscraper.create_scraper()
 url = "https://parlayplay.io/api/v1/crossgame/search/?sport=eSports&league=CSGO&includeAlt=true&version=2&includeBoost=true"
@@ -16,7 +17,6 @@ headers = {
 
 response = scraper.get(url, headers=headers,allow_redirects=False)
 
-# Optionally, if the response is JSON, you can parse and print it as a dictionary
 if response.status_code == 200:
 
     data = response.json()["players"]
@@ -36,11 +36,22 @@ if response.status_code == 200:
          
 
   
-    print(players)
+
+    for player in players:
+       for match in matches.values():
+            for game in match:
+                n = player.find(" ")
+                player_team = player[n:].strip()
+                if player_team in game:
+                    if game not in finalDict:
+                        finalDict[game] = [[player, players[player]]]
+                    else:
+                        finalDict[game].append([player,players[player]])
+                    
+    print(finalDict)
 
 
 
 
-         # If the response is in JSON format
 else:
     print(f"Error: {response.status_code}")
