@@ -29,5 +29,27 @@ response = requests.request("POST", url, headers=headers, data=payload)
 print(response.status_code)
 print(response.text)
 data = response.json()
+# data['data']['search']['games'] --> game matchups
+# for player in data['data']['search']['markets']:
+  #player = player['id'].split(",")
+  # player_id = player[0]
+  # stat_type = player[1]
+  # stat_line = player['lines'][0]
+  # stat_odds = player['probabilities'][0]
+
+  # Create player dictionary mapping player_id as key to stat type, stat_line, and stat_odds as a list key
+
+  # for key in player_dict:
+  #   for participant in data['data']['search']['participants']:
+  #     if key == participant['id']:
+  #       player_name = participant['player']['displayName'] 
+  #       player_headshot = participant['player']['headshotURL'] 
+  #       finalDict[player_name] = [[player_dict[key],player_headshot]]
+
+
+
+
+
+# CS:GO Sport:A0mfMN
 print(json.dumps(data, indent=2))
 
