@@ -1,15 +1,20 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-lineApi = 'https://partner-api.prizepicks.com/projections?league_id=265'
-playerApi = 'https://partner-api.prizepicks.com/projections?per_page=1000'
+load_dotenv()
+PRIZELINES = os.getenv("PRIZEPICKS1")
+PRIZEPLAYERS  = os.getenv("PRIZEPICKS2")
+
+
 
 stat_kind = {}
 playerData = {}
 finalizedData = {}
 
 
-lines = requests.get(lineApi)
-players = requests.get(playerApi) # Theese are the API requests to get JSON data regarding players and lines
+lines = requests.get(PRIZELINES)
+players = requests.get(PRIZEPLAYERS) # Theese are the API requests to get JSON data regarding players and lines
 if lines.status_code and players.status_code== 200:
 
    #Initialized empty dictionary at the beggining of the file. Now we will loop through player JSON Data where we will be mapping player ID to player name

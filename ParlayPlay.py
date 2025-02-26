@@ -1,12 +1,16 @@
 import requests
 import cloudscraper
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+PARLAYPLAY = os.getenv("PARLAYPLAY")
 
 matches = {}
 players = {}
 finalDict = {}
 
 scraper = cloudscraper.create_scraper()
-url = "https://parlayplay.io/api/v1/crossgame/search/?sport=eSports&league=CSGO&includeAlt=true&version=2&includeBoost=true"
 
 headers = {
     'x-requested-with': 'XMLHttpRequest',
@@ -15,7 +19,7 @@ headers = {
     'Cookie': 'sessionid=hac7837fqtzflespad1rv13cx6c1vj0a' 
 }
 
-response = scraper.get(url, headers=headers,allow_redirects=False)
+response = scraper.get(PARLAYPLAY, headers=headers,allow_redirects=False)
 
 if response.status_code == 200:
 

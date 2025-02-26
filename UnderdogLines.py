@@ -1,9 +1,13 @@
 import requests
-from bs4 import BeautifulSoup
+import os
+from dotenv import load_dotenv
 
-UnderdogLines = 'https://api.underdogfantasy.com/v2/pickem_search/search_results?sport_id=CS' #UD API for CS lines
+load_dotenv()
+UNDERDOG = os.getenv("UNDERDOG")
 
-Underdog = requests.get(UnderdogLines)
+
+
+Underdog = requests.get(UNDERDOG)
 Underdog_CS2_Lines = {} #Initialize Final Dictionary for storing player lines
 
 if Underdog.status_code == 200:

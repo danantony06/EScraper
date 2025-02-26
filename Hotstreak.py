@@ -1,7 +1,10 @@
 import requests
 import json
+import os
+from dotenv import load_dotenv
 
-url = "https://api.hotstreak.gg/graphql"
+load_dotenv()
+HOTSTREAK = os.getenv("HOTSTREAK")
 
 finalData = {}
 
@@ -30,7 +33,7 @@ for i in range(1,6):
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIb3RTdHJlYWsgKHByb2R1Y3Rpb24pIiwic3ViIjoiSHNmOjpVc2VyOkpwdG12NEciLCJleHAiOjE3NDIyNzMyNTEsImlhdCI6MTczOTg1NDA1MX0.ykuHAwYlvrvqQCOrCFCTRBnqwjgw_c91AMtxDOs5ZGE'
   }
 
-  response = requests.request("POST", url, headers=headers, data=payload)
+  response = requests.request("POST", HOTSTREAK, headers=headers, data=payload)
   # print(response.status_code)
   # print(response.text)
   data = response.json()
