@@ -1,11 +1,17 @@
 import requests
 import json
 import datetime
-#import os
-#from dotenv import load_dotenv
-#load_dotenv()
+import pandas as pd
+from supabase import create_client,Client
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 #BOVADA = os.getenv("BOVADA")
+supaUrl = os.getenv("SUPABASE_URL")
+supaKey = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(supaUrl, supaKey)
 
 url = "https://www.bovada.lv/services/sports/event/coupon/events/A/description/esports?marketFilterId=def&liveOnly=true&eventsLimit=50&lang=en"
 
@@ -55,7 +61,71 @@ for matchup in gameMatchups:
       finalDict[f"{matchup}({datetime.datetime.fromtimestamp(time/1000)})"].append(f"Over/Under {totalLines[totalline][0][2]} total rounds: {totalLines[totalline][0][1]}/{totalLines[totalline][1][1]}")
 
 
-print(finalDict)
+
+
+
+
+delete = supabase.table("Game Odds").delete().eq("Source", "Bovada").execute()
+
+for game,odds in finalDict.items():
+  index = game.find("(")
+  matchup = game[:index]
+  date = game[index + 1:-1]
+  team1index = matchup.find(" ")
+  Team1 = matchup[:team1index]
+  Team2 = matchup[(team1index + 3):]
+  for odd in odds:
+    odds_type = None
+    odds1 = None
+    odds2 = None
+    spreadline = None
+    odds_provider = "Bovada"  # Change this if using multiple providers
+
+    if 'ML' in odd:
+        team, ml = odd.split(" ML:")
+        odds_type = "ML"
+        if team.strip() == Team1:
+            odds1 = ml
+        else:
+            odds2 = ml
+    elif 'spread' in odd:
+        team, spread = odd.split(" spread at ")
+        odds_type = "spread"
+        if team[:team.find(":")] == Team1:
+            odds1 = spread
+            spreadLine = team[team.find(":"):] 
+        else:
+            odds2 = spread
+            spreadLine = team[team.find(":")+1:] 
+
+    elif 'Over/Under' in odd:
+        odds_type = "O/U"
+        odds1, odds2 = odd.split(":")[1].strip().split('/')
+
+
+
+    if odds1 or odds2:
+      data = {
+              "MatchupID": matchup,
+                "Team 1": Team1,
+                "Team 2": Team2,
+                "LineType": odds_type,
+                "Odds 1": odds1,
+                "Odds 2": odds2,
+                "Source": odds_provider,
+                "Date": date
+            }
+      
+      insert = supabase.table("Game Odds").insert(data).execute()
+      # print(delete)
+      # print(insert)
+
+      
+
+# df = pd.DataFrame(finalDict)
+# df.to_csv('bovada_odds_pandas.csv', index=False)
+# print("Data saved to bovada_odds_pandas.csv")
+
 
 
 
