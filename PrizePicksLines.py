@@ -1,10 +1,16 @@
 import requests
 import os
 from dotenv import load_dotenv
+from supabase import create_client,Client
 
 load_dotenv()
 PRIZELINES = os.getenv("PRIZEPICKS1")
 PRIZEPLAYERS  = os.getenv("PRIZEPICKS2")
+
+supaUrl = os.getenv("SUPABASE_URL")
+supaKey = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(supaUrl, supaKey)
+
 
 
 
@@ -26,16 +32,31 @@ if lines.status_code and players.status_code== 200:
     lineData = lines.json()['data'] #JSON daata for player line and line type
     for object in lineData:
             if object['relationships']['new_player']['data']['id'] not in stat_kind:
-                stat_kind[object['relationships']['new_player']['data']['id']] = [[object['attributes']['stat_type'],object['attributes']['line_score']]]
+                stat_kind[object['relationships']['new_player']['data']['id']] = [[object['attributes']['stat_type'],object['attributes']['line_score'],object['attributes']['start_time']]]
             else:
-                stat_kind[object['relationships']['new_player']['data']['id']].append([object['attributes']['stat_type'],object['attributes']['line_score']])
+                stat_kind[object['relationships']['new_player']['data']['id']].append([object['attributes']['stat_type'],object['attributes']['line_score'],object['attributes']['start_time']])
     
     for line in stat_kind:
          for player in playerData:
               if player == line:
                    finalizedData[playerData[player]] = stat_kind[line]
-    print(finalizedData)
-                   
-         
-else:
-    print(f"Error:{lines.status_code}")
+
+
+Source = "PrizePicks"
+delete = supabase.table("Game Odds").delete().eq("Source", "PrizePicks").execute()
+
+for player,lines in finalizedData.items():
+     player = player
+     for line in lines:
+        stat_type = line[0]
+        stat_line = line[1]
+        date = line[2]
+        data = {
+               "Player": player,
+               "stat_type":stat_type,
+               "stat_line":stat_line, 
+               "Date": date,
+               "Source":Source
+        }
+        insert = supabase.table("PrizePicks").insert(data).execute()
+        print(insert)
