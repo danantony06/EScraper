@@ -3,7 +3,12 @@ import json
 import os
 from dotenv import load_dotenv
 
+from supabase import create_client,Client
+
 load_dotenv()
+supaUrl = os.getenv("SUPABASE_URL")
+supaKey = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(supaUrl, supaKey)
 HOTSTREAK = os.getenv("HOTSTREAK")
 
 finalData = {}
@@ -55,15 +60,46 @@ for i in range(1,6):
   for key in player_dict:
     for participant in data['data']['search']['participants']:
       if key == participant['id']:
+        opponentId = participant['opponentId']
+        for game in data['data']['search']['games']:
+          for opponent in game['opponents']:
+            if opponentId == opponent['id']:
+              gameId = opponent['gameId']
+              for gameFilter in data['data']['search']['gameFilters']:
+                if gameId == gameFilter['key']:
+                  player_matchup = f"{gameFilter['meta']['teams']['home']} vs. {gameFilter['meta']['teams']['away']}"
+                  date = gameFilter['meta']['scheduled_at']
+
+    
         player_name = participant['player']['displayName'] 
-        player_headshot = participant['player']['headshotUrl'] 
-        finalDict[player_name] = [[player_dict[key],player_headshot]]
+        player_headshot = participant['player']['headshotUrl']
+        finalDict[player_name] = [[player_dict[key],player_matchup,date]]
 
 
   
   finalData.update(finalDict)
 
-print(finalData)
+
+for player, details in finalData.items():
+    for entry in details:
+        stats, match, match_time = entry
+        for stat in stats:
+            stat_name, value, probabilities = stat
+            data = {
+                "Player": player,
+                "Stat_Type": stat_name,
+                "Stat_Line": value,
+                "Over": probabilities[0],
+                "Under": probabilities[1],
+                "Matchup": match,
+                "Date": match_time,
+            }
+            insert = supabase.table("HotStreak").insert(data).execute()
+
+
+            
+
+
 
 
 
