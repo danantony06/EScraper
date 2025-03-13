@@ -2,8 +2,13 @@ import requests
 import cloudscraper
 import os
 from dotenv import load_dotenv
+from supabase import Client,create_client
 
 load_dotenv()
+
+supaUrl = os.getenv("SUPABASE_URL")
+supaKey = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(supaUrl, supaKey)
 PARLAYPLAY = os.getenv("PARLAYPLAY")
 
 matches = {}
@@ -27,15 +32,15 @@ if response.status_code == 200:
 
     for entry in data: #Aggregate All Game Matchups along with ParlayPlay's Odds on the games
         if entry['match']['matchGroup'] in matches:
-            matches[entry['match']['matchGroup']].update([f"{entry['match']['homeTeam']['teamname']}({entry['match']['homeWinProb']}) VS. {entry['match']['awayTeam']['teamname']}({entry['match']['awayWinProb']})"])
+            matches[entry['match']['matchGroup']].update([f"{entry['match']['homeTeam']['teamname']}({entry['match']['homeWinProb']}) VS. {entry['match']['awayTeam']['teamname']}({entry['match']['awayWinProb']})-->{entry['match']['matchDate']}"])
         else:
-            matches[entry['match']['matchGroup']] = {f"{entry['match']['homeTeam']['teamname']}({entry['match']['homeWinProb']}) VS. {entry['match']['awayTeam']['teamname']}({entry['match']['awayWinProb']})"}
+            matches[entry['match']['matchGroup']] = {f"{entry['match']['homeTeam']['teamname']}({entry['match']['homeWinProb']}) VS. {entry['match']['awayTeam']['teamname']}({entry['match']['awayWinProb']})-->{entry['match']['matchDate']}"}
     
     for entry in data:
         if len(entry['stats']) == 2:
-            players[f"{entry['player']['fullName']} {entry['player']['team']['teamname']}"] = [f"{entry['stats'][0]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})",f"{entry['stats'][-1]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})"]
+            players[f"{entry['player']['fullName']}({entry['player']['team']['teamname']})"] = [f"{entry['stats'][0]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})",f"{entry['stats'][-1]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})"]
         else:
-            players[f"{entry['player']['fullName']} {entry['player']['team']['teamname']}"] = [f"{entry['stats'][0]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})"]
+            players[f"{entry['player']['fullName']}({entry['player']['team']['teamname']})"] = [f"{entry['stats'][0]['altLines']['values'][0]['marketName']}({entry['stats'][0]['altLines']['values'][0]['selectionPoints']})"]
 
          
 
@@ -52,7 +57,30 @@ if response.status_code == 200:
                     else:
                         finalDict[game].append([player,players[player]])
                     
-    print(finalDict)
+
+    for matchup,lines in finalDict.items():
+        matchupId = matchup[:matchup.find("-")]
+        date = matchup[(matchup.find(">") + 1):]
+        for line in lines:
+            player = line[0]
+            i = 0
+            while i < 2:
+                stat_type = line[1][i][:line[1][i].find("(")]
+                stat_line = line[1][i][line[1][i].find("("):]
+                i += 1
+
+                data = {
+                    "Matchup": matchupId,
+                    "Player":player,
+                    "Stat_Type":stat_type,
+                    "Stat_Line":stat_line,
+                    "Date": date,
+                }
+                insert = supabase.table("ParlayPlay").insert(data).execute()
+
+
+
+            
 
 
 
