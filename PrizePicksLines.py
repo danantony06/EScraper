@@ -43,7 +43,7 @@ if lines.status_code and players.status_code== 200:
 
 
 Source = "PrizePicks"
-delete = supabase.table("Game Odds").delete().eq("Source", "PrizePicks").execute()
+delete = supabase.table("PrizePicks").delete().eq("Source", "PrizePicks").execute()
 
 for player,lines in finalizedData.items():
      player = player
