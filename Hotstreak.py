@@ -93,6 +93,7 @@ for player, details in finalData.items():
                 "Under": probabilities[1],
                 "Matchup": match,
                 "Date": match_time,
+                "Source": "Hotstreak"
             }
             insert = supabase.table("HotStreak").insert(data).execute()
 

@@ -75,6 +75,7 @@ if response.status_code == 200:
                     "Stat_Type":stat_type,
                     "Stat_Line":stat_line,
                     "Date": date,
+                    "Source": "ParlayPlay"
                 }
                 insert = supabase.table("ParlayPlay").insert(data).execute()
 
