@@ -10,6 +10,7 @@ supaUrl = os.getenv("SUPABASE_URL")
 supaKey = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(supaUrl, supaKey)
 PARLAYPLAY = os.getenv("PARLAYPLAY")
+delete = supabase.table("ParlayPlay").delete().eq("Source", "ParlayPlay").execute()
 
 matches = {}
 players = {}

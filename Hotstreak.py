@@ -2,6 +2,8 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
+import time
+
 
 from supabase import create_client,Client
 
@@ -13,7 +15,10 @@ HOTSTREAK = os.getenv("HOTSTREAK")
 
 finalData = {}
 
-for i in range(1,6):
+delete = supabase.table("HotStreak").delete().eq("Source", "Hotstreak").execute()
+
+for i in range(1,5):
+  time.sleep(5)
   finalDict = {}
   player_dict = {}
   payload = json.dumps({
@@ -37,68 +42,72 @@ for i in range(1,6):
     'x-requested-with': 'web',
     'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIb3RTdHJlYWsgKHByb2R1Y3Rpb24pIiwic3ViIjoiSHNmOjpVc2VyOkpwdG12NEciLCJleHAiOjE3NDIyNzMyNTEsImlhdCI6MTczOTg1NDA1MX0.ykuHAwYlvrvqQCOrCFCTRBnqwjgw_c91AMtxDOs5ZGE'
   }
-
-  response = requests.request("POST", HOTSTREAK, headers=headers, data=payload)
-  # print(response.status_code)
-  # print(response.text)
-  data = response.json()
-  # data['data']['search']['games'] --> game matchups
-  for player in data['data']['search']['markets']:
-    playerAttributes = player['id'].split(",")
-    player_id = playerAttributes[0]
-    stat_type = playerAttributes[1]
-    stat_line = player['lines'][0]
-    stat_odds = player['probabilities'][0]
-    if player_id not in player_dict:
-      player_dict[player_id] = [[stat_type,stat_line,stat_odds]]
-    else:
-      player_dict[player_id].append([stat_type,stat_line,stat_odds])
-
-
-    # Create player dictionary mapping player_id as key to stat type, stat_line, and stat_odds as a list key
-
-  for key in player_dict:
-    for participant in data['data']['search']['participants']:
-      if key == participant['id']:
-        opponentId = participant['opponentId']
-        for game in data['data']['search']['games']:
-          for opponent in game['opponents']:
-            if opponentId == opponent['id']:
-              gameId = opponent['gameId']
-              for gameFilter in data['data']['search']['gameFilters']:
-                if gameId == gameFilter['key']:
-                  player_matchup = f"{gameFilter['meta']['teams']['home']} vs. {gameFilter['meta']['teams']['away']}"
-                  date = gameFilter['meta']['scheduled_at']
-
-    
-        player_name = participant['player']['displayName'] 
-        player_headshot = participant['player']['headshotUrl']
-        finalDict[player_name] = [[player_dict[key],player_matchup,date]]
+  try:
+      response = requests.request("POST", HOTSTREAK, headers=headers, data=payload)
+      time.sleep(5)
+      # print(response.status_code)
+      # print(response.text)
+      data = response.json()
+      print(data['data'])
+    #   # data['data']['search']['games'] --> game matchups
+      for player in data['data']['search']['markets']:
+        playerAttributes = player['id'].split(",")
+        player_id = playerAttributes[0]
+        stat_type = playerAttributes[1]
+        stat_line = player['lines'][0]
+        stat_odds = player['probabilities'][0]
+        if player_id not in player_dict:
+          player_dict[player_id] = [[stat_type,stat_line,stat_odds]]
+        else:
+          player_dict[player_id].append([stat_type,stat_line,stat_odds])
 
 
-  
-  finalData.update(finalDict)
+    #     # Create player dictionary mapping player_id as key to stat type, stat_line, and stat_odds as a list key
+
+      for key in player_dict:
+        for participant in data['data']['search']['participants']:
+          if key == participant['id']:
+            opponentId = participant['opponentId']
+            for game in data['data']['search']['games']:
+              for opponent in game['opponents']:
+                if opponentId == opponent['id']:
+                  gameId = opponent['gameId']
+                  for gameFilter in data['data']['search']['gameFilters']:
+                    if gameId == gameFilter['key']:
+                      player_matchup = f"{gameFilter['meta']['teams']['home']} vs. {gameFilter['meta']['teams']['away']}"
+                      date = gameFilter['meta']['scheduled_at']
+
+        
+            player_name = participant['player']['displayName'] 
+            player_headshot = participant['player']['headshotUrl']
+            finalDict[player_name] = [[player_dict[key],player_matchup,date]]
 
 
-for player, details in finalData.items():
-    for entry in details:
-        stats, match, match_time = entry
-        for stat in stats:
-            stat_name, value, probabilities = stat
-            data = {
-                "Player": player,
-                "Stat_Type": stat_name,
-                "Stat_Line": value,
-                "Over": probabilities[0],
-                "Under": probabilities[1],
-                "Matchup": match,
-                "Date": match_time,
-                "Source": "Hotstreak"
-            }
-            insert = supabase.table("HotStreak").insert(data).execute()
+      
+      finalData.update(finalDict)
 
 
-            
+      for player, details in finalData.items():
+          for entry in details:
+              stats, match, match_time = entry
+              for stat in stats:
+                  stat_name, value, probabilities = stat
+                  data = {
+                      "Player": player,
+                      "Stat_Type": stat_name,
+                      "Stat_Line": value,
+                      "Over": probabilities[0],
+                      "Under": probabilities[1],
+                      "Matchup": match,
+                      "Date": match_time,
+                      "Source": "Hotstreak"
+                  }
+                  insert = supabase.table("HotStreak").insert(data).execute()
+  except:
+    break
+
+
+              
 
 
 
@@ -106,6 +115,6 @@ for player, details in finalData.items():
 
 
 
-  # CS:GO Sport:A0mfMN
-  # print(json.dumps(data, indent=2))
+#   # CS:GO Sport:A0mfMN
+#   # print(json.dumps(data, indent=2))
 

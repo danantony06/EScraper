@@ -56,68 +56,85 @@ delete = supabase.table("Underdog").delete().eq("Source", "Underdog").execute()
 
 for player,lines in Underdog_CS2_Lines.items():
     if player == "":
-        for playerLines in Underdog_CS2_Lines[player]:
+        try:
+            for playerLines in Underdog_CS2_Lines[player]:
+                participant = None
+                stat_type = None
+                stat_line = None
+                date = None
+                matchup = None
+                participant = playerLines[0][:playerLines[0].find(" ")]
+                stat_type = playerLines[0][playerLines[0].find(" "):]
+                stat_line = playerLines[1]
+                if len(playerLines) > 2:
+                    date = playerLines[2][0]
+                    matchup = playerLines[2][1]
+                else:
+                    date = "N/A"
+                    matchup = "N/A"
+                anonData = {
+                "Player":participant,
+                "Matchup":matchup,
+                "stat_type":stat_type,
+                "stat_line":stat_line,
+                "Date":date,
+                "Source":"Underdog"
+                }
+                insert = supabase.table("Underdog").insert(anonData).execute()
+        except:
+            print(f"There was an error inserting {player} for {stat_type}")
+            continue
+    if len(lines) > 4:
+        continue
+
+    
+    if len(lines) == 3:
+        try:
             participant = None
             stat_type = None
             stat_line = None
             date = None
             matchup = None
-            participant = playerLines[0][:playerLines[0].find(" ")]
-            stat_type = playerLines[0][playerLines[0].find(" "):]
-            stat_line = playerLines[1]
-            if len(playerLines) > 2:
-                date = playerLines[2][0]
-                matchup = playerLines[2][1]
-            anonData = {
-            "Player":participant,
-            "Matchup":matchup,
-            "stat_type":stat_type,
-            "stat_line":stat_line,
-            "Date":date,
-            "Source":"Underdog"
-            }
-            insert = supabase.table("Underdog").insert(anonData).execute()
-    if len(lines) > 4:
-        continue
-    if len(lines) == 3:
-        participant = None
-        stat_type = None
-        stat_line = None
-        date = None
-        matchup = None
-        participant = player
-        for line in lines[0:2]:
-            stat_type = line[0]
-            stat_line = line[1]
-            date = lines[2][0]
-            matchup = lines[2][1]
-            multiMatch = {
-                "Player":participant,
-                "Matchup":matchup,
-                "stat_type":stat_type,
-                "stat_line":stat_line,
-                "Date":date,
-                "Source":"Underdog"
-            }
-            insert = supabase.table("Underdog").insert(multiMatch).execute()
+            participant = player
+            for line in lines[0:2]:
+                stat_type = line[0]
+                stat_line = line[1]
+                date = lines[2][0]
+                matchup = lines[2][1]
+                multiMatch = {
+                    "Player":participant,
+                    "Matchup":matchup,
+                    "stat_type":stat_type,
+                    "stat_line":stat_line,
+                    "Date":date,
+                    "Source":"Underdog"
+                }
+                insert = supabase.table("Underdog").insert(multiMatch).execute()
+        except:
+            print(f"There was an error inserting {player} for {stat_type}")
+            continue
 
 
     else: 
-        participant = player
-        date = lines[2][0]
-        matchup = lines[2][1]
-        for line in lines[0:2]:
-            stat_type = line[0]
-            stat_line = line[1]
-            data = {
-                "Player":participant,
-                "Matchup":matchup,
-                "stat_type":stat_type,
-                "stat_line":stat_line,
-                "Date":date,
-                "Source":"Underdog"
-            }
-            insert = supabase.table("Underdog").insert(data).execute()
+        try:
+            participant = player
+            date = lines[2][0]
+            matchup = lines[2][1]
+            for line in lines[0:2]:
+                stat_type = line[0]
+                stat_line = line[1]
+                data = {
+                    "Player":participant,
+                    "Matchup":matchup,
+                    "stat_type":stat_type,
+                    "stat_line":stat_line,
+                    "Date":date,
+                    "Source":"Underdog"
+                }
+                insert = supabase.table("Underdog").insert(data).execute()
+        except:
+            print(f"There was an error inserting {player} for {stat_type}")
+            continue
 
 
         
