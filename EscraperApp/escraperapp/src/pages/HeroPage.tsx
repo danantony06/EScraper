@@ -1,7 +1,9 @@
 import { HeroSectionDark } from "@/components/HeroSectionDark";
-import { LampContainer } from "@/components/ui/lamp";
+import { NavBar } from "@/components/NavBar";
 const HeroPage = () => {
   return (
+    <>
+    <NavBar/>
       <HeroSectionDark
         title="Welcome to a new era of E-Sports Betting"
         subtitle={{
@@ -23,6 +25,8 @@ const HeroPage = () => {
           darkLineColor: "2a2a2a"
         }}
       />
+      </>
+      
   );
 }
 
