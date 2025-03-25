@@ -73,12 +73,15 @@ if response.status_code == 200:
                 data = {
                     "Matchup": matchupId,
                     "Player":player,
-                    "Stat_Type":stat_type,
-                    "Stat_Line":stat_line,
+                    "player_team":player_team,
+                    "stat_type":stat_type,
+                    "stat_line":stat_line,
                     "Date": date,
                     "Source": "ParlayPlay"
                 }
                 insert = supabase.table("ParlayPlay").insert(data).execute()
+                print(insert)
+
 
 
 

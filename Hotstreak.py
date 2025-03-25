@@ -94,8 +94,8 @@ for i in range(1,5):
                   stat_name, value, probabilities = stat
                   data = {
                       "Player": player,
-                      "Stat_Type": stat_name,
-                      "Stat_Line": value,
+                      "stat_type": stat_name,
+                      "stat_line": value,
                       "Over": probabilities[0],
                       "Under": probabilities[1],
                       "Matchup": match,
