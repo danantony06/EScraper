@@ -59,10 +59,9 @@ app.get("/PrizePicks", async (req: Request, res: Response): Promise<void> => {
     if (error) {
       console.error("Supabase Query Error:", error);
       res.status(500).json({ error: error.message });
-      return; // Important: return after sending error response
+      return; 
     }
 
-    // Check if data is null or undefined
     if (!PrizePicks) {
       res.status(404).json({ message: 'No data found' });
       return;
