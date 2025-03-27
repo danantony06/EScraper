@@ -153,6 +153,22 @@ app.get("/gameOdds",async(req:Request,res:Response)=>{
 });
 
 
+app.get("/finalData",async(req:Request,res:Response)=>{
+  try {
+    const {data:FinalData,error} = await supabase
+    .from('FinalData')
+    .select('*')
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalData) 
+  } catch (error) {
+    res.status(500).json({error:"Final Data Couldnt load"});
+
+  }
+});
+
+
 
 
 

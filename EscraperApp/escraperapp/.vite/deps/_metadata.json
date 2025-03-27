@@ -1,0 +1,58 @@
+{
+  "hash": "702c24f7",
+  "configHash": "2ffd964e",
+  "lockfileHash": "abd6c639",
+  "browserHash": "bbea85b0",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "c201e88a",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "14bee50f",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "01c9a234",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "e52208da",
+      "needsInterop": false
+    },
+    "ag-grid-community": {
+      "src": "../../node_modules/ag-grid-community/dist/package/main.esm.mjs",
+      "file": "ag-grid-community.js",
+      "fileHash": "2952d0b0",
+      "needsInterop": false
+    },
+    "ag-grid-react": {
+      "src": "../../node_modules/ag-grid-react/dist/package/index.esm.mjs",
+      "file": "ag-grid-react.js",
+      "fileHash": "fd35ff0f",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-36MOOIDQ": {
+      "file": "chunk-36MOOIDQ.js"
+    },
+    "chunk-DBUGNT2R": {
+      "file": "chunk-DBUGNT2R.js"
+    },
+    "chunk-VUPZMC2T": {
+      "file": "chunk-VUPZMC2T.js"
+    },
+    "chunk-EQCVQC35": {
+      "file": "chunk-EQCVQC35.js"
+    }
+  }
+}

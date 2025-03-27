@@ -13,12 +13,13 @@ supaKey = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(supaUrl, supaKey)
 HOTSTREAK = os.getenv("HOTSTREAK")
 
-finalData = {}
+# finalData = {}
 
 delete = supabase.table("HotStreak").delete().eq("Source", "Hotstreak").execute()
 
-for i in range(1,5):
-  time.sleep(5)
+for i in range(1,20):
+  # time.sleep(5)
+  finalData = {}
   finalDict = {}
   player_dict = {}
   payload = json.dumps({
@@ -40,7 +41,7 @@ for i in range(1,5):
     'sec-ch-ua-platform': '"Windows"',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36',
     'x-requested-with': 'web',
-    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIb3RTdHJlYWsgKHByb2R1Y3Rpb24pIiwic3ViIjoiSHNmOjpVc2VyOkpwdG12NEciLCJleHAiOjE3NDIyNzMyNTEsImlhdCI6MTczOTg1NDA1MX0.ykuHAwYlvrvqQCOrCFCTRBnqwjgw_c91AMtxDOs5ZGE'
+    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJIb3RTdHJlYWsgKHByb2R1Y3Rpb24pIiwic3ViIjoiSHNmOjpVc2VyOkpwdG12NEciLCJleHAiOjE3NDU3MjY1NzcsImlhdCI6MTc0MzA0ODE3N30.C3j9IJpUxlts4RuesLP6BHvQh0AoxvgNlE2B952y8LU'
   }
   try:
       response = requests.request("POST", HOTSTREAK, headers=headers, data=payload)
@@ -48,7 +49,7 @@ for i in range(1,5):
       # print(response.status_code)
       # print(response.text)
       data = response.json()
-      print(data['data'])
+     ########## print(data['data'])
     #   # data['data']['search']['games'] --> game matchups
       for player in data['data']['search']['markets']:
         playerAttributes = player['id'].split(",")
@@ -103,8 +104,10 @@ for i in range(1,5):
                       "Source": "Hotstreak"
                   }
                   insert = supabase.table("HotStreak").insert(data).execute()
+                  print(insert)
   except:
-    break
+    continue
+
 
 
               
