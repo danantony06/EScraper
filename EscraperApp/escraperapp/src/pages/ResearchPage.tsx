@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavBar } from "@/components/NavBar";
+import GridExample from "@/components/dataTable";
 import CSLogo from "../assets/CS2Logo.png";
 import playerLogo from "../assets/header_ctt.png";
 import LeaugeLogo from "../assets/LuegeFinal.png";
@@ -14,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { sportsBooks } from "@/constants";
+
 
 export function ResearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -126,8 +128,8 @@ export function ResearchPage() {
             </div>
           </div>
         </div>
-        
         <div className="p-4">
+          <div><GridExample /></div>
         </div>
       </div>
     </div>

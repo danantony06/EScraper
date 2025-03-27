@@ -8,6 +8,13 @@ import {
   flexRender 
 } from '@tanstack/react-table';
 
+import {
+    keepPreviousData,
+    QueryClient,
+    QueryClientProvider,
+    useInfiniteQuery,
+  } from '@tanstack/react-query'
+
 interface RowData {
   Player: string;
   Matchup: string;
@@ -47,7 +54,8 @@ useEffect(() => {
           <span className="text-indigo-300 font-semibold">
             {info.getValue<string>()}
           </span>
-        )
+        ),
+        sticky: "left",
       },
       {
         accessorKey: 'Matchup',
@@ -149,9 +157,9 @@ useEffect(() => {
 
   return (
     <div className="bg-gray-900 p-4 rounded-xl shadow-2xl">
-      <div className="overflow-x-auto">
+      <div className="h-[680px] overflow-auto">
         <table className="w-full border-collapse">
-          <thead className="bg-gray-800">
+          <thead className="bg-gray-800 sticky top-0 z-20 shadow-md">
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id} className="border-b border-gray-700">
                 {headerGroup.headers.map(header => (
