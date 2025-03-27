@@ -110,6 +110,7 @@ for player,lines in Underdog_CS2_Lines.items():
                     "Source":"Underdog"
                 }
                 insert = supabase.table("Underdog").insert(multiMatch).execute()
+                print(insert)
         except:
             print(f"There was an error inserting {player} for {stat_type}")
             continue
@@ -132,6 +133,7 @@ for player,lines in Underdog_CS2_Lines.items():
                     "Source":"Underdog"
                 }
                 insert = supabase.table("Underdog").insert(data).execute()
+                print(insert)
         except:
             print(f"There was an error inserting {player} for {stat_type}")
             continue

@@ -17,14 +17,14 @@ import { sportsBooks } from "@/constants";
 
 export function ResearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStats, setSelectedStats] = useState<string[]>([]); // Track multiple selected stat types
+  const [selectedStats, setSelectedStats] = useState<string[]>([]); 
 
-  // Handle stat selection for multi-select
+ 
   const handleStatChange = (value: string) => {
     setSelectedStats((prevStats) =>
       prevStats.includes(value)
-        ? prevStats.filter((stat) => stat !== value) // Deselect if already selected
-        : [...prevStats, value] // Add to the array if not already selected
+        ? prevStats.filter((stat) => stat !== value)
+        : [...prevStats, value] 
     );
   };
 
@@ -36,20 +36,15 @@ export function ResearchPage() {
     <div className="min-h-screen bg-[#0a0b1a]">
       <NavBar />
       
-      {/* Main content area */}
       <div className="container mx-auto">
-        {/* Esports Navigation Bar */}
         <div className="w-full border-b border-neutral-700/80 py-3">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Left side: "All Esports" button and logos */}
             <div className="flex flex-wrap items-center gap-6">
-              {/* "All Esports" Button */}
               <button className="flex items-center hover:bg-orange-600 text-white h-12 font-extrabold py-2 px-4 rounded-lg transition-colors">
                 <img src={playerLogo} alt="Shoota" className="h-6 mr-2" />
                 ALL ESPORTS
               </button>
 
-              {/* Esports Logos */}
               <div className="flex items-center gap-4">
                 <img
                   src={LeaugeLogo}
@@ -74,9 +69,7 @@ export function ResearchPage() {
               </div>
             </div>
 
-            {/* Right side: Filters and search */}
             <div className="flex flex-wrap items-center gap-4">
-              {/* Stat Type Filter */}
               <Select onValueChange={handleStatChange}>
                 <SelectTrigger className="w-[200px]  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-105">
                   <SelectValue placeholder="Filter By Stat Type" />
@@ -90,7 +83,6 @@ export function ResearchPage() {
                 </SelectContent>
               </Select>
 
-              {/* Sportsbook Filter */}
               <Select onValueChange={handleStatChange}>
                 <SelectTrigger className="w-[200px]  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-105">
                   <SelectValue placeholder="Filter By Sportsbook" />
@@ -105,7 +97,6 @@ export function ResearchPage() {
                 </SelectContent>
               </Select>
 
-              {/* Search Input */}
               <div className="relative w-[250px]">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                   <svg
@@ -136,9 +127,7 @@ export function ResearchPage() {
           </div>
         </div>
         
-        {/* Content area for search results would go here */}
         <div className="p-4">
-          {/* Your search results content */}
         </div>
       </div>
     </div>
