@@ -9,7 +9,7 @@ import BovadaLogo from "@/assets/Bovada-Logo-400x400-1.webp"
 
 export const NavBarItems = [
     { label: "Matches", href: "#" },
-    { label:"Research Tool",href: "#"},
+    { label:"Research Tool",href: "/research"},
     {label:"Bonuses",href: "#"}
 
   ];
