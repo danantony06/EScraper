@@ -18,6 +18,7 @@ PrizePicksData = (supabase.table("PrizePicks").select("*").execute())
 UnderdogData = (supabase.table("Underdog").select("*").execute())
 HotStreakData = (supabase.table("HotStreak").select("*").execute())
 ParlayPlayData = (supabase.table("ParlayPlay").select("*").execute())
+HitRateData = (supabase.table("HitRates").select("*").execute())
 
 
 players = {}

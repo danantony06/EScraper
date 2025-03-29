@@ -68,7 +68,7 @@ if response.status_code == 200:
                 i = 0
                 while i < 2:
                     stat_type = line[1][i][:line[1][i].find("(")]
-                    stat_line = line[1][i][line[1][i].find("("):]
+                    stat_line = line[1][i][line[1][i].find("(")+1:-1]
                     i += 1
 
                     data = {

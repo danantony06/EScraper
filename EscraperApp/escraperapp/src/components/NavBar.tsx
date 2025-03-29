@@ -1,29 +1,30 @@
-import React from "react";
 import Logo from "../assets/finalLogo.png";
 import { NavBarItems } from "@/constants";
 import { NavBarSign } from "@/constants";
-import { Button } from "@/components/ui/button"
-
+import { Link } from "react-router-dom";
 function NavBar() {
   return (
     <nav className="sticky top-0 z-50 w-full h-20 bg-[#0a0b1a] border-b border-neutral-700/80">
       <div className="w-full h-full flex justify-between items-center px-4">
         {/* Logo container */}
-        <div className="h-full flex items-center">
+        <Link  to = {"/"} className="h-full flex items-center">
+          <div className="h-full flex items-center">
           <img src={Logo} alt="Logo" className="h-full object-contain" />
+          
         </div>
+        </Link>
         
         {/* Navigation items */}
         <div className="flex items-center flex-grow justify-center"> 
           <ul className="flex space-x-6">
             {NavBarItems.map((item, index) => (
               <li key={index}>
-                <a 
-                  href={item.href} 
+                <Link 
+                  to={item.href} 
                   className="transition-colors font-extrabold text-[18px] uppercase font-blenderpro text-white hover:text-white/80"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
