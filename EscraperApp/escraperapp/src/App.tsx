@@ -14,8 +14,7 @@ const App = () => {
         <Route path="/" element={<HeroPage />} />
         <Route path = "/header" element = {<NavBar />}/>
         <Route path = "/research" element = {<ResearchPage/>}/>
-        <Route path = "/table" element = {<GridExample/>}/>
-        {/* Other routes */}
+        <Route path = "/table" element = {<GridExample selectedStat="exampleStat" searchTerm="exampleSearch" selectedSportsbook="exampleSportsbook" />}/>
       </Routes>
     </Router>
     </div>

@@ -19,18 +19,18 @@ import { sportsBooks } from "@/constants";
 
 export function ResearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStats, setSelectedStats] = useState<string[]>([]); 
+  const [selectedStat, setSelectedStat] = useState<string>(""); 
+  const [selectedSportsbook, setSelectedSportsbook] = useState<string>("");
 
- 
   const handleStatChange = (value: string) => {
-    setSelectedStats((prevStats) =>
-      prevStats.includes(value)
-        ? prevStats.filter((stat) => stat !== value)
-        : [...prevStats, value] 
-    );
+    setSelectedStat(value);
   };
-
-  const searchChange = (e: any) => {
+  
+  const handleSportsbookChange = (value: string) => {
+    setSelectedSportsbook(value);
+  };
+  
+  const searchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
@@ -73,10 +73,10 @@ export function ResearchPage() {
 
             <div className="flex flex-wrap items-center gap-4">
               <Select onValueChange={handleStatChange}>
-                <SelectTrigger className="w-[200px]  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-105">
+                <SelectTrigger className="w-[200px] inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px] rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-10">
                   <SelectValue placeholder="Filter By Stat Type" />
                 </SelectTrigger>
-                <SelectContent className="border-[#2B365C] bg-[#1b1e2b] text-white  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-10">
+                <SelectContent className="border-[#2B365C] bg-[#1b1e2b] text-white inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px] rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-10">
                   {statType.map((item, index) => (
                     <SelectItem key={index} value={item.label}>
                       {item.label}
@@ -85,11 +85,11 @@ export function ResearchPage() {
                 </SelectContent>
               </Select>
 
-              <Select onValueChange={handleStatChange}>
-                <SelectTrigger className="w-[200px]  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-105">
+              <Select onValueChange={handleSportsbookChange}>
+                <SelectTrigger className="w-[200px] inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px] rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-10">
                   <SelectValue placeholder="Filter By Sportsbook" />
                 </SelectTrigger>
-                <SelectContent className="border-[#2B365C] bg-[#1b1e2b] text-white  inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px]  rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-105">
+                <SelectContent className="border-[#2B365C] bg-[#1b1e2b] text-white inline-flex items-center gap-2 leading-[1] border whitespace-nowrap font-bold transition-colors disabled:pointer-events-none disabled:opacity-50 text-white uppercase bg-transparent hover:bg-[#2E3137]/30 py-[12px] rounded-[8px] border-[#2B365C] relative transition-all duration-300 hover:scale-105 z-10">
                   {sportsBooks.map((item, index) => (
                     <SelectItem key={index} value={item.label} className="flex items-center gap-2">
                       {item.label}
@@ -128,8 +128,14 @@ export function ResearchPage() {
             </div>
           </div>
         </div>
-        <div className="p-4">
-          <div><GridExample /></div>
+        <div className="w-full p-1">
+          <div>
+            <GridExample 
+              selectedStat={selectedStat}
+              searchTerm={searchTerm}
+              selectedSportsbook={selectedSportsbook}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -28,7 +28,10 @@ for source_data in [PrizePicksData]:
     for data in source_data:
         try:
             for row in data[1]:
-                correctPlayerNames.append(row["Player"])
+                name = row["Player"]
+                if name[-1] == "-":
+                    name = name[:-1]
+                correctPlayerNames.append(name)
         except:
             continue
 
@@ -81,6 +84,8 @@ for source_data in [PrizePicksData,UnderdogData,HotStreakData,ParlayPlayData]:
                     if source == "Underdog":
                         matchup = row["Matchup"]
                         currentPlayer = row["Player"]
+                        if currentPlayer[-1] == "-":
+                            currentPlayer = currentPlayer[:-1]
                         for names in correctPlayerNames:
                             if currentPlayer.lower() == names.lower():
                                 currentPlayer = names

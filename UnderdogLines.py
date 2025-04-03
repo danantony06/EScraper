@@ -119,6 +119,8 @@ for player,lines in Underdog_CS2_Lines.items():
     else: 
         try:
             participant = player
+            if participant[-1] == "-":
+                participant = participant[:-1]
             date = lines[2][0]
             matchup = lines[2][1]
             for line in lines[0:2]:

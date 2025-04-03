@@ -47,6 +47,8 @@ delete = supabase.table("PrizePicks").delete().eq("Source", "PrizePicks").execut
 
 for player,lines in finalizedData.items():
      player = player
+     if player[-1] == "-":
+          player = player[:-1]
      for line in lines:
         stat_type = line[0]
         stat_line = line[1]
