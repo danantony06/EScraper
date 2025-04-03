@@ -1,23 +1,13 @@
 import dotenv from 'dotenv';
-dotenv.config(); // Ensure this is called BEFORE any imports that might use .env variables
+dotenv.config(); 
 
 import express, { Request, Response, Express } from 'express';
 import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
 
-// Potential Issues and Solutions:
+console.log('Loaded .env variables:', process.env);  
 
-// 1. TypeScript Compilation
-// Make sure you have ts-node or have compiled the TypeScript to JavaScript
-// You might need to run with: 
-// npx ts-node your-file.ts
-// OR
-// tsc && node dist/your-file.js
 
-// 2. Environment Variable Loading
-console.log('Loaded .env variables:', process.env);  // Log the entire env to check
-
-// 3. Explicit Error Handling for .env
 if (!process.env.SUPABASE_URL) {
   console.error("SUPABASE_URL is not set!");
   process.exit(1);
@@ -28,19 +18,16 @@ if (!process.env.SUPABASE_KEY) {
   process.exit(1);
 }
 
-// 4. Detailed Environment Logging
 console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
 console.log("SUPABASE_SERVICE_ROLE_KEY:", process.env.SUPABASE_KEY);
 console.log("PORT:", process.env.PORT);
 
-// 5. Create Supabase Client with Error Handling
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY,
   {
-    // Optional: Add additional configuration
     db: {
-      schema: 'public', // Explicitly set schema if needed
+      schema: 'public', 
     }
   }
 );
@@ -156,7 +143,7 @@ app.get("/gameOdds",async(req:Request,res:Response)=>{
 app.get("/finalData",async(req:Request,res:Response)=>{
   try {
     const {data:FinalData,error} = await supabase
-    .from('FinalData')
+    .from('FinalConsolidated')
     .select('*')
     if(error){
       console.log(error)
@@ -167,6 +154,99 @@ app.get("/finalData",async(req:Request,res:Response)=>{
 
   }
 });
+
+app.get("/finalData/Kills", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .eq("Stat_Type","Map 1-2 Kills")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+app.get("/finalData/Headshots", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .eq("Stat_Type","Map 1-2 Headshots")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+app.get("/finalData/PrizePicks", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .neq("PrizePicks","N/A")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+app.get("/finalData/Underdog", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .neq("Underdog","N/A")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+app.get("/finalData/ParlayPlay", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .neq("ParlayPlay","N/A")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+
+app.get("/finalData/HotStreak", async(req:Request, res:Response) => {
+  try {
+    const {data:FinalKillData,error} = await supabase
+    .from('FinalConsolidated')
+    .select('*')
+    .neq("HotStreak","N/A")
+    if(error){
+      console.log(error)
+    }
+    res.json(FinalKillData)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+
 
 
 

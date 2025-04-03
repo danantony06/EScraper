@@ -20,8 +20,8 @@ export const NavBarSign = [
 ]
 
 export const statType = [
-  {label:"Map 1-2 Kills",href:"#"},
-  {label:"Map 1-2 Headshots",href:"#"},
+  {label:"Map 1-2 Kills",href:"#",value:"Kills"},
+  {label:"Map 1-2 Headshots",href:"#",value:"Headshots"},
   {label:"Map 1-2 Assists",href:"#"},
   {label:"Map 1-2 Deaths",href:"#"},
   {label:"Map 1 Kills",href:"#"},

@@ -16,7 +16,6 @@ supaUrl = os.getenv("SUPABASE_URL")
 supaKey = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(supaUrl, supaKey)
 
-# Set up Selenium WebDriver (Make sure you have ChromeDriver installed)
 driver = webdriver.Chrome()  
 
 
@@ -30,7 +29,7 @@ playerTeam = {} # Dictionary assigning players to their teams
 statTracker = {}
 
 
-ogUrl = f'https://escorenews.com/en/csgo/team?s=3'  #OG Website to get top Ranked Teams
+ogUrl = f'https://escorenews.com/en/csgo/team?s=7'  #OG Website to get top Ranked Teams
 driver.get(ogUrl)
 time.sleep(3)
 soup = BeautifulSoup(driver.page_source, "html.parser")  #Load Page

@@ -6,7 +6,6 @@ function NavBar() {
   return (
     <nav className="sticky top-0 z-50 w-full h-20 bg-[#0a0b1a] border-b border-neutral-700/80">
       <div className="w-full h-full flex justify-between items-center px-4">
-        {/* Logo container */}
         <Link  to = {"/"} className="h-full flex items-center">
           <div className="h-full flex items-center">
           <img src={Logo} alt="Logo" className="h-full object-contain" />
@@ -14,7 +13,6 @@ function NavBar() {
         </div>
         </Link>
         
-        {/* Navigation items */}
         <div className="flex items-center flex-grow justify-center"> 
           <ul className="flex space-x-6">
             {NavBarItems.map((item, index) => (
@@ -30,7 +28,6 @@ function NavBar() {
           </ul>
         </div>
         
-        {/* Sign buttons */}
         <div className="flex items-center">
           <ul className="flex space-x-4">
           {NavBarSign.map((item, index) => (
